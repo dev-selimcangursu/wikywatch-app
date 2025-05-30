@@ -8,9 +8,9 @@ const menuItems = [
   { name: 'Teknik Servis Kayıt Formu', screen: 'ServiceForm', icon: 'construct-outline' },
   { name: 'Servis Durum Sorgulama', screen: 'ServiceStatusInquiry', icon: 'search-outline' },
   { name: 'Wiky Watch Sıfırlama Formu', screen: 'ResetForm', icon: 'refresh-outline' },
-  { name: 'Servis Ödeme Formu', screen: 'ServisOdemeFormu', icon: 'card-outline' },
-  { name: 'Sıkça Sorulan Sorular', screen: 'SikcaSorulanSorular', icon: 'help-circle-outline' },
-  { name: 'Sipariş Durumu', screen: 'SiparisDurumu', icon: 'cube-outline' },
+  { name: 'Servis Ödeme Formu', screen: 'DevicePaymentInquiry', icon: 'card-outline' },
+  { name: 'Sıkça Sorulan Sorular', screen: 'FaqScreen', icon: 'help-circle-outline' },
+  { name: 'Sipariş Durumu', screen: 'OrderTracking', icon: 'cube-outline' },
   { name: 'Satış Noktaları', screen: 'SatisNoktalari', icon: 'location-outline' },
   { name: 'Bloglarımız', screen: 'Bloglarimiz', icon: 'newspaper-outline' },
 ];
