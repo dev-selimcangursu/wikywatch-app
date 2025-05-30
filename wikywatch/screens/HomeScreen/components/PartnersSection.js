@@ -43,6 +43,7 @@ export default function PartnersSection() {
                 <Image source={partner.img} style={styles.logo} />
               </View>
             ))}
+       
           </View>
         ))}
       </Swiper>
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: 80,
-    width: (slideWidth - 32) / logosPerSlide, // yan boşlukları çıkarıp eşit böl
+    width: (slideWidth - 32) / logosPerSlide,
     elevation: 3,
   },
   logo: {

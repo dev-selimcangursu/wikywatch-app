@@ -7,5 +7,9 @@ export const styles = StyleSheet.create({
     padding: 16,
   },
 
-
+  bigText: {
+    fontSize: 30,  // büyük metin boyutu
+    fontWeight: "bold", // kalın metin
+    color: "#000", // istersen renk ver
+  },
 });
