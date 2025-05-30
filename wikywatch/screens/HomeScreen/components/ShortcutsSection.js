@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  Linking,
 } from "react-native";
 
 const shortcutsData = [
@@ -13,37 +14,37 @@ const shortcutsData = [
     id: "1",
     name: "Teknik Servis Kayıt Formu",
     img: require("../../../assets/images/icons/teknik-servis-icon.png"),
-    screen: "TeknikServisKayitFormu",
+    screen: "ServiceForm",
   },
   {
     id: "2",
     name: "Servis Durum Sorgulama",
     img: require("../../../assets/images/icons/service-query.png"),
-    screen: "ServisDurumSorgulama",
+    screen: "ServiceStatusInquiry",
   },
   {
     id: "3",
     name: "Wiky Watch Sıfırlama Formu",
     img: require("../../../assets/images/icons/service-reset.png"),
-    screen: "WikyWatchSifirlamaFormu",
+    screen: "ResetForm",
   },
   {
     id: "4",
     name: "Servis Ödeme Formu",
     img: require("../../../assets/images/icons/service-payment-query.png"),
-    screen: "ServisOdemeFormu",
+    screen: "DevicePaymentInquiry",
   },
   {
     id: "5",
     name: "Teknik Servis Destek",
     img: require("../../../assets/images/icons/service-call-center.png"),
-    screen: "TeknikServisDestek",
+    phone: "02163459360",
   },
   {
     id: "6",
-    name: "Satış Destek Hizmet",
+    name: "Satış Hattı Çağrı Merkezi",
     img: require("../../../assets/images/icons/sales-call-center.png"),
-    screen: "SatisHizmet",
+    phone: "02163489393",
   },
 ];
 
@@ -51,6 +52,14 @@ const { width } = Dimensions.get("window");
 const cardSize = (width - 48) / 3;
 
 export default function ShortcutsSection({ navigation }) {
+  const handlePress = (shortcut) => {
+    if (shortcut.screen) {
+      navigation.navigate(shortcut.screen);
+    } else if (shortcut.phone) {
+      Linking.openURL(`tel:${shortcut.phone}`);
+    }
+  };
+
   return (
     <View style={{ marginBottom: 20 }}>
       <Text style={styles.title}>Kısayollar</Text>
@@ -59,7 +68,7 @@ export default function ShortcutsSection({ navigation }) {
           <TouchableOpacity
             key={shortcut.id}
             style={styles.card}
-            onPress={() => navigation.navigate(shortcut.screen)}
+            onPress={() => handlePress(shortcut)}
           >
             <Image source={shortcut.img} style={styles.image} />
             <Text style={styles.name}>{shortcut.name}</Text>

@@ -6,7 +6,7 @@ import HomeScreen from "../screens/HomeScreen";
 import Notifications from "../screens/Notifications";
 import ChatScreen from "../screens/Chat";
 
-import MenuStack from "./stacks/MenuStack";
+import MenuStack from "../screens/Menu";
 
 const Tab = createBottomTabNavigator();
 
