@@ -3,6 +3,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 
 import HomeScreen from "../screens/HomeScreen";
+import Notifications from "../screens/Notifications";
+import ChatScreen from "../screens/Chat";
+
+import MenuStack from "./stacks/MenuStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +30,7 @@ export default function TabNavigator() {
             iconName = focused ? "home" : "home-outline";
           } else if (route.name === "Bildirimler") {
             iconName = focused ? "notifications" : "notifications-outline";
-          } else if (route.name === "Chat") {
+          } else if (route.name === "Sohbet") {
             iconName = focused ? "chatbubble" : "chatbubble-outline";
           } else if (route.name === "Menü") {
             iconName = focused ? "menu" : "menu-outline";
@@ -37,9 +41,9 @@ export default function TabNavigator() {
       })}
     >
       <Tab.Screen name="Anasayfa" component={HomeScreen} />
-      <Tab.Screen name="Bildirimler" component={HomeScreen} />
-      <Tab.Screen name="Chat" component={HomeScreen} />
-      <Tab.Screen name="Menü" component={HomeScreen} />
+      <Tab.Screen name="Bildirimler" component={Notifications} />
+      <Tab.Screen name="Sohbet" component={ChatScreen} />
+      <Tab.Screen name="Menü" component={MenuStack} />
     </Tab.Navigator>
   );
 }

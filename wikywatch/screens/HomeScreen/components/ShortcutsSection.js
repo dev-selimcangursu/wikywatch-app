@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
   },
   image: {
-    width: 64,
+    width: 44,
     height: 64,
     marginBottom: 8,
     resizeMode: "contain",
