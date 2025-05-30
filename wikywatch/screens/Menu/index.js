@@ -12,7 +12,7 @@ const menuItems = [
   { name: 'Sıkça Sorulan Sorular', screen: 'FaqScreen', icon: 'help-circle-outline' },
   { name: 'Sipariş Durumu', screen: 'OrderTracking', icon: 'cube-outline' },
   { name: 'Satış Noktaları', screen: 'SalesPoints', icon: 'location-outline' },
-  { name: 'Bloglarımız', screen: 'Bloglarimiz', icon: 'newspaper-outline' },
+  { name: 'Bloglarımız', screen: 'BlogList', icon: 'newspaper-outline' },
 ];
 
 export default function MenuScreen({ navigation }) {
