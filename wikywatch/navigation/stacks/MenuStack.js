@@ -8,6 +8,7 @@ import ResetForm from "../../screens/ResetForm";
 import DevicePaymentInquiry from "../../screens/DevicePaymentInquiry";
 import FaqScreen from "../../screens/FaqScreen";
 import OrderTracking from "../../screens/OrderTracking";
+import SalesPoints from "../../screens/SalesPoints";
 
 const Stack = createStackNavigator();
 
@@ -47,6 +48,11 @@ export default function MenuStack() {
          <Stack.Screen
         name="OrderTracking"
         component={OrderTracking}
+        options={{ headerShown: false }}
+      />
+        <Stack.Screen
+        name="SalesPoints"
+        component={SalesPoints}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
