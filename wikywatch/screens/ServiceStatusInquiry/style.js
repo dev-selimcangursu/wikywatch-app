@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#f7f9fc",
     shadowRadius: 10,
-
     minHeight: 180,
   },
 });

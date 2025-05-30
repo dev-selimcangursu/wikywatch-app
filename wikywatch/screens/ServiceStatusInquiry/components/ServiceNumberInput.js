@@ -1,19 +1,16 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+import Input from "../../../components/Input";
+import Label from "../../../components/Label";
 
 export default function ServiceNumberInput({ value, onChange }) {
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.label}>Servis Numarası</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Servis numaranızı giriniz"
+      <Label>Servis Numarası</Label>
+      <Input
         value={value}
         onChangeText={onChange}
-        autoCapitalize="none"
-        autoCorrect={false}
-        keyboardType="default"
-        returnKeyType="done"
+        placeholder="Servis numaranızı giriniz"
       />
     </View>
   );
@@ -22,19 +19,5 @@ export default function ServiceNumberInput({ value, onChange }) {
 const styles = StyleSheet.create({
   wrapper: {
     marginBottom: 20,
-  },
-  label: {
-    fontWeight: "600",
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    fontSize: 16,
-    backgroundColor: "#fafafa",
   },
 });

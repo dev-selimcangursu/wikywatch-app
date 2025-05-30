@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { View, ScrollView, Alert } from "react-native";
-
-import Logo from "./components/Logo";
 import OrderNumberInput from "./components/OrderNumberInput";
-import NoteText from "./components/NoteText";
+import NoteText from "../../components/NoteText";
 import AppButton from "../../components/AppButton";
 import Header from "../../components/Header";
 
@@ -26,8 +24,8 @@ export default function ServiceStatusInquiry() {
       keyboardShouldPersistTaps="handled"
     >
       <Header
-        subtitle="Sipariş Numarasını Eksiksiz Giriniz..."
-        title="Ödeme Yapılacak Cihaz Sorgulama"
+        subtitle="Lütfen Sipariş Numaranızı Eksiksiz Giriniz.."
+        title="Sipariş Sorgulama"
       />
 
       <View style={styles.formContainer}>

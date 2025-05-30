@@ -8,6 +8,7 @@ export default function NoteText({ children }) {
 const styles = StyleSheet.create({
   note: {
     marginTop: 16,
+    marginBottom:16,
     fontSize: 13,
     color: "#777",
     textAlign: "center",

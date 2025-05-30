@@ -18,7 +18,7 @@ const blogData = [
     image: require("../../assets/images/blogs/blog-2.jpg"),
   },
     {
-    id: 2,
+    id: 3,
     title: "Wiky Watch Özellikleri",
     description: "Adım sayar, canlı konum ve daha fazlası.",
     image: require("../../assets/images/blogs/blog-3.jpg"),

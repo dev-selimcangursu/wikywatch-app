@@ -9,14 +9,17 @@ import {
   Image,
 } from "react-native";
 import styles from "./style";
-import Input from "./components/Input";
-import Select from "./components/Select";
+
+import Input from "../../components/Input";
+import Label from "../../components/Label";
+import AppButton from "../../components/AppButton";
+import NoteText from "../../components/NoteText";
+import Textarea from "../../components/Textarea";
+import Select from "../../components/Select";
 import CheckBoxGroup from "./components/CheckBoxGroup";
 import BoxContent from "./components/BoxContent";
 import Header from "../../components/Header";
 
-
-// Sabit seçenekler
 const cityOptions = [
   { label: "İstanbul", value: "1" },
   { label: "Ankara", value: "2" },
@@ -79,107 +82,89 @@ export default function ServiceForm() {
   };
 
   const handleSubmit = () => {
-    // Validation yapılabilir
     Alert.alert("Başarılı", "Form gönderildi.");
     console.log("Gönderilen Form Verisi:", formData);
   };
 
   return (
-    
     <ScrollView contentContainerStyle={styles.container}>
-      <Header subtitle="Lütfen ürün bilgilerini eksiksiz doldurunuz" title="Wiky Teknik Servis Formu" />
+      <Header
+        subtitle="Lütfen ürün bilgilerini eksiksiz doldurunuz"
+        title="Wiky Teknik Servis Formu"
+      />
       <View style={styles.formContainer}>
+        <Label>Ad Soyad</Label>
         <Input
-          label="Ad Soyad"
           placeholder="Ad Soyadınızı Giriniz"
           value={formData.fullName}
           onChangeText={(val) => handleChange("fullName", val)}
         />
-
+        <Label>GSM Numarası</Label>
         <Input
-          label="GSM No"
           placeholder="Telefon numarası giriniz"
           value={formData.phone}
           onChangeText={(val) => handleChange("phone", val)}
           keyboardType="phone-pad"
         />
-
+        <Label>E-Posta Adresi</Label>
         <Input
-          label="E-Posta"
           placeholder="E-posta adresi giriniz"
           value={formData.email}
           onChangeText={(val) => handleChange("email", val)}
           keyboardType="email-address"
         />
-
-        <Text style={styles.label}>Adres Bilgisi</Text>
-        <TextInput
-          style={styles.textarea}
-          multiline
-          numberOfLines={4}
+        <Label>Adres Bilgisi</Label>
+        <Textarea
           placeholder="Adres bilgilerinizi giriniz"
           value={formData.address}
           onChangeText={(val) => handleChange("address", val)}
         />
-
+        <Label>Şehir</Label>
         <Select
-          label="İl"
           selectedValue={formData.city}
           onValueChange={(val) => handleChange("city", val)}
           options={cityOptions}
         />
-
+        <Label>İlçe</Label>
         <Select
-          label="İlçe"
           selectedValue={formData.district}
           onValueChange={(val) => handleChange("district", val)}
           options={districtOptions}
         />
-
+        <Label>Ürün</Label>
         <Select
-          label="Ürün"
           selectedValue={formData.product}
           onValueChange={(val) => handleChange("product", val)}
           options={productOptions}
         />
-
+        <Label>İmei Numarası</Label>
         <Input
-          label="IMEI Numarası"
           placeholder="IMEI giriniz"
           value={formData.imei}
           onChangeText={(val) => handleChange("imei", val)}
         />
-
+        <Label>Arıza Kategorisi</Label>
         <CheckBoxGroup
-          label="Arıza Kategorisi"
           options={faultCategoryOptions}
           selectedValues={formData.faultCategories}
           onChange={(selected) => handleChange("faultCategories", selected)}
         />
-
-        <Text style={styles.label}>Arıza Tanımı</Text>
-        <TextInput
-          style={styles.textarea}
-          multiline
-          numberOfLines={10}
+        <Label>Arıza Tanımı</Label>
+        <Textarea
           placeholder="Arızayı detaylı şekilde açıklayınız"
           value={formData.faultDescription}
           onChangeText={(val) => handleChange("faultDescription", val)}
         />
-
+        <Label>Kutu İçeriği</Label>
         <BoxContent
           selectedValues={formData.boxContent}
           onChange={(selected) => handleChange("boxContent", selected)}
         />
-
-        <Text style={styles.warningText}>
+        <NoteText>
           Ürünü teknik servise gönderirken kutu içeriğini eksiksiz ekleyiniz.
           Gönderim sonrası tarafınıza bilgilendirme yapılacaktır.
-        </Text>
-
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Gönder</Text>
-        </TouchableOpacity>
+        </NoteText>
+        <AppButton title="Gönder" onPress={handleSubmit} />
       </View>
     </ScrollView>
   );

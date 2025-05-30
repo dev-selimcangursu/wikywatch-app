@@ -1,12 +1,13 @@
 import React from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
+import Input from "../../../components/Input";
+import Label from "../../../components/Label";
 
 export default function OrderNumberInput({ value, onChange }) {
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.label}>Sipariş Numarası</Text>
-      <TextInput
-        style={styles.input}
+      <Label>Sipariş Numarası</Label>
+      <Input
         placeholder="Sipariş numaranızı giriniz"
         value={value}
         onChangeText={onChange}
@@ -22,19 +23,5 @@ export default function OrderNumberInput({ value, onChange }) {
 const styles = StyleSheet.create({
   wrapper: {
     marginBottom: 20,
-  },
-  label: {
-    fontWeight: "600",
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    fontSize: 16,
-    backgroundColor: "#fafafa",
   },
 });

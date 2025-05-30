@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { ScrollView, View, Text, TextInput, Alert, TouchableOpacity } from "react-native";
 
 import Header from "../../components/Header";
-import Input from "./components/Input";
+import Input from "../../components/Input";
+import Label from "../../components/Label";
+import Textarea from "../../components/Textarea";
+import AppButton from "../../components/AppButton";
+
+
 import FileInput from "./components/FileInput";
 
 import styles from "./style";
@@ -38,48 +43,40 @@ export default function ResetForm() {
       />
 
       <View style={styles.formWrapper}>
+        <Label>Ad ve Soyad</Label>
         <Input
-          label="Ad Soyad"
+          placeholder={'Ad soyadınızı giriniz.'}
           value={formData.fullName}
           onChangeText={(val) => setFormData({ ...formData, fullName: val })}
         />
-
+        <Label>İletişim Numarası</Label>
         <Input
-          label="GSM No"
+           placeholder={'İletişim numaranızı giriniz.'}
           keyboardType="phone-pad"
           value={formData.phone}
           onChangeText={(val) => setFormData({ ...formData, phone: val })}
         />
-
+        <Label>E-Posta Adresi</Label>
         <Input
-          label="E-Posta"
+           placeholder={'E-Posta adresinizi giriniz.'}
           keyboardType="email-address"
           value={formData.email}
           onChangeText={(val) => setFormData({ ...formData, email: val })}
         />
-
+        <Label>İmei Numarası</Label>
         <Input
-          label="IMEI Numarası"
+          placeholder={'İmei numarasını giriniz.'}
           value={formData.imei}
           onChangeText={(val) => setFormData({ ...formData, imei: val })}
         />
-
-        <Text style={styles.label}>Sıfırlama Nedeni</Text>
-        <TextInput
-          style={styles.textarea}
-          multiline
-          numberOfLines={4}
+        <Label>Sıfırlama Nedeni</Label>
+        <Textarea
           placeholder="Sıfırlama nedeninizi detaylıca belirtiniz"
           value={formData.reason}
           onChangeText={(val) => setFormData({ ...formData, reason: val })}
-          placeholderTextColor="#999"
         />
-
-        <FileInput label="Fatura Dosyası" file={file} onFileChange={setFile} />
-
-        <TouchableOpacity style={styles.button} onPress={handleSubmit} activeOpacity={0.8}>
-          <Text style={styles.buttonText}>Gönder</Text>
-        </TouchableOpacity>
+         <FileInput label="Fatura Dosyası" file={file} onFileChange={setFile} />
+         <AppButton title="Gönder" onPress={handleSubmit} />
       </View>
     </ScrollView>
   );

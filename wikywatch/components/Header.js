@@ -1,14 +1,10 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
-
+import { View, Text, StyleSheet } from "react-native";
+import Logo from "./Logo"; 
 const Header = ({ title, subtitle }) => {
   return (
     <View style={styles.container}>
-      <Image
-        source={require("../assets/images/wiky-logo.png")}
-        style={styles.logo}
-        resizeMode="contain"
-      />
+      <Logo />
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.subtitle}>{subtitle}</Text>
     </View>
@@ -23,11 +19,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     shadowRadius: 5,
   },
-  logo: {
-    width: 120,
-    height: 90,
-    marginBottom: 10,
-  },
   title: {
     fontSize: 20,
     fontWeight: "bold",
@@ -37,7 +28,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 14,
     color: "#666",
-    textAlign:'center'
+    textAlign: 'center',
   },
 });
 

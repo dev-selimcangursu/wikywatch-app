@@ -88,7 +88,6 @@ export default function BoxContent({ selectedValues, onChange }) {
 
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.label}>Kutu İçeriği</Text>
       <View style={styles.row}>
         {items.map((item, idx) => (
           <View key={idx} style={styles.item}>
@@ -106,14 +105,6 @@ export default function BoxContent({ selectedValues, onChange }) {
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: 15,
-    fontWeight: "500",
-    marginBottom: 8,
-  },
   row: {
     flexDirection: "row",
     gap: 16,

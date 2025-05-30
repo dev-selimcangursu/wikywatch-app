@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { View, ScrollView, Alert } from "react-native";
-
-import Logo from "./components/Logo";
 import ServiceNumberInput from "./components/ServiceNumberInput";
-import NoteText from "./components/NoteText";
+import NoteText from "../../components/NoteText";
 import AppButton from "../../components/AppButton";
 import Header from "../../components/Header";
 
