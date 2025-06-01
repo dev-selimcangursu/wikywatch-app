@@ -5,7 +5,7 @@ const app = express();
 const mobileAppsRoute = require("./Routes/MobileApp");
 const salesPointRoutes = require('./Routes/SalesPoint');
 const notificationRoutes = require('./Routes/Notification');
-
+const productsRoutes = require('./Routes/Product');
 const cors = require("cors");
 const path = require("path");
 
@@ -26,7 +26,7 @@ mongoose
 app.use("/api/mobile-apps", mobileAppsRoute);
 app.use('/api/sales-points', salesPointRoutes);
 app.use('/api/notification', notificationRoutes);
-
+app.use('/api/products', productsRoutes);
 
 // Sunucuyu başlat
 const PORT = process.env.PORT || 3000;
