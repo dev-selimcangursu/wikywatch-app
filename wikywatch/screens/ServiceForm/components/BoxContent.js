@@ -1,101 +1,41 @@
-import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+// components/BoxContent/index.js
+import React, { useEffect } from "react";
+import { View, Text, StyleSheet, Image, ActivityIndicator } from "react-native";
 import CheckBox from "expo-checkbox";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  toggleItem,
+  fetchBoxContent,
+} from "../../../redux/slices/boxContentSlice";
 
-const items = [
-  {
-    label: "Simkart",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "Kutu",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "Şarj Kablosu",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "Kullanım Kılavuzu",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "Garanti Belgesi",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "Kordon Halkası",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "İç Sünger",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "İç Karton",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "Şeffaf Kapak",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "Mini Tornavida",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "Yedek Vida",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "Cımbız",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "Pena",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "İtme Aparatı",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "Not Kağıdı",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "Mağaza Formu",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "Ekran Koruyucu",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-  {
-    label: "Elden Teslim Formu",
-    image: require("../../../assets/images/icons/no-image.jpg"),
-  },
-];
+export default function BoxContent() {
+  const dispatch = useDispatch();
+  const { items, selected, status } = useSelector((state) => state.boxContent);
 
-export default function BoxContent({ selectedValues, onChange }) {
-  const toggle = (value) => {
-    if (selectedValues.includes(value)) {
-      onChange(selectedValues.filter((v) => v !== value));
-    } else {
-      onChange([...selectedValues, value]);
-    }
-  };
+  useEffect(() => {
+    dispatch(fetchBoxContent());
+  }, [dispatch]);
+
+  if (status === "loading") {
+    return <ActivityIndicator size="large" />;
+  }
 
   return (
     <View style={styles.wrapper}>
       <View style={styles.row}>
         {items.map((item, idx) => (
           <View key={idx} style={styles.item}>
-            <Image source={item.image} style={styles.image} />
-            <Text style={styles.text}>{item.label}</Text>
+            <Image
+              source={{
+                uri: `http://192.168.36.147:3000/box_content/${item.image}`,
+              }}
+              style={styles.image}
+            />
+
+            <Text style={styles.text}>{item.name}</Text>
             <CheckBox
-              value={selectedValues.includes(item.label)}
-              onValueChange={() => toggle(item.label)}
+              value={selected.includes(item)}
+              onValueChange={() => dispatch(toggleItem(item))}
             />
           </View>
         ))}
@@ -123,5 +63,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 13,
     marginBottom: 4,
+    textAlign: "center",
   },
 });
