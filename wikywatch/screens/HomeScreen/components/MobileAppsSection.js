@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -8,84 +8,73 @@ import {
   Linking,
   Platform,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 
-const appsData = [
-  {
-    id: "1",
-    name: "Setracker",
-    img: require("../../../assets/images/app/setracker.jpeg"),
-    androidScheme: "setracker://",
-    iosScheme: "setracker://",
-    androidStore: "market://details?id=com.pty.sdk",
-    iosStore: "https://apps.apple.com/app/id966628456",
-  },
-  {
-    id: "2",
-    name: "Setracker 2",
-    img: require("../../../assets/images/app/setracker2.webp"),
-    androidScheme: "setracker2://",
-    iosScheme: "setracker2://",
-    androidStore: "market://details?id=com.pty.sdk2",
-    iosStore: "https://apps.apple.com/app/id1234567890",
-  },
-  {
-    id: "3",
-    name: "Wiky Safe",
-    img: require("../../../assets/images/app/safe.webp"),
-    androidScheme: "wikysafe://",
-    iosScheme: "wikysafe://",
-    androidStore: "market://details?id=com.wiky.safe",
-    iosStore: "https://apps.apple.com/app/id2345678901",
-  },
-  {
-    id: "4",
-    name: "Wiky Care",
-    img: require("../../../assets/images/app/care.webp"),
-    androidScheme: "wikycare://",
-    iosScheme: "wikycare://",
-    androidStore: "market://details?id=com.wiky.care",
-    iosStore: "https://apps.apple.com/app/id3456789012",
-  },
-  {
-    id: "5",
-    name: "Wiky Tracker",
-    img: require("../../../assets/images/app/wiky-tracker.png"),
-    androidScheme: "wikytracker://",
-    iosScheme: "wikytracker://",
-    androidStore: "market://details?id=com.wiky.tracker",
-    iosStore: "https://apps.apple.com/app/id4567890123",
-  },
-];
+import { useSelector, useDispatch } from "react-redux";
+import { fetchApps } from "../../../redux/slices/appsSlice";
 
+// Ekran genişliğini alıyoruz ve kart genişliğini hesaplıyoruz
 const { width } = Dimensions.get("window");
-const cardSize = (width - 48) / 5;
+const cardSize = (width - 48) / 5; // 5 kart yan yana sığacak şekilde boyutlandırma
 
 export default function MobileAppsSection() {
+  const dispatch = useDispatch();
+
+  // Redux store'dan apps, loading ve error state'lerini alıyoruz
+  const { apps, loading, error } = useSelector((state) => state.apps);
+
+  // Bileşen yüklendiğinde apps listesini API'den çekme
+  useEffect(() => {
+    dispatch(fetchApps());
+  }, [dispatch]);
+
+  // Uygulamaya tıklanınca çalışacak fonksiyon
   const openApp = async (item) => {
-    const scheme = Platform.OS === "android" ? item.androidScheme : item.iosScheme;
-    const storeUrl = Platform.OS === "android" ? item.androidStore : item.iosStore;
+    // Platforma göre uygulama açma linki
+    const scheme =
+      Platform.OS === "android" ? item.androidScheme : item.iosScheme;
+    const storeUrl =
+      Platform.OS === "android" ? item.androidStore : item.iosStore;
 
     try {
+      // Cihazda uygulama yüklü mü kontrol et
       const supported = await Linking.canOpenURL(scheme);
       if (supported) {
+        // Yüklüyse uygulamayı aç
         await Linking.openURL(scheme);
       } else {
+        // Yüklü değilse mağaza linkine yönlendir
         await Linking.openURL(storeUrl);
       }
     } catch (error) {
       console.warn("Uygulama açılamadı:", error);
+      // Her durumda mağaza linkine yönlendir
       await Linking.openURL(storeUrl);
     }
   };
+
+  if (loading) {
+    return <ActivityIndicator size="large" />;
+  }
+  if (error) {
+    return <Text>Hata: {error}</Text>;
+  }
 
   return (
     <View style={{ marginBottom: 20 }}>
       <Text style={styles.title}>Mobil Uygulamalarımız</Text>
       <View style={styles.container}>
-        {appsData.map((item) => (
-          <TouchableOpacity key={item.id} style={styles.card} onPress={() => openApp(item)}>
-            <Image source={item.img} style={styles.image} />
+        {apps.map((item) => (
+          <TouchableOpacity
+            key={item._id}
+            style={styles.card}
+            onPress={() => openApp(item)}
+          >
+            <Image
+              source={{ uri: `http://192.168.1.23:3000/app/${item.img}` }}
+              style={styles.image}
+            />
             <Text style={styles.name}>{item.name}</Text>
           </TouchableOpacity>
         ))}
@@ -93,7 +82,6 @@ export default function MobileAppsSection() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   title: {
     fontSize: 20,

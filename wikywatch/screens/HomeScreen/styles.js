@@ -8,8 +8,8 @@ export const styles = StyleSheet.create({
   },
 
   bigText: {
-    fontSize: 30,  // büyük metin boyutu
-    fontWeight: "bold", // kalın metin
-    color: "#000", // istersen renk ver
+    fontSize: 30, 
+    fontWeight: "bold",
+    color: "#000",
   },
 });

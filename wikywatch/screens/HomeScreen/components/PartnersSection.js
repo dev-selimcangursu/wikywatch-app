@@ -1,56 +1,58 @@
-import React from "react";
-import { View, Text, Image, Dimensions, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { View, Text, Image, Dimensions, StyleSheet, ActivityIndicator } from "react-native";
 import Swiper from "react-native-swiper";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSalesPoints } from "../../../redux/slices/salesPointsSlice";
 
-const partnersData = [
-  { id: "1", img: require("../../../assets/images/partners/amazon-logo.webp") },
-  { id: "2", img: require("../../../assets/images/partners/D&R_logo.jpg") },
-  { id: "3", img: require("../../../assets/images/partners/logo.webp") },
-  {
-    id: "4",
-    img: require("../../../assets/images/partners/mediamarkt-logo.png"),
-  },
-  { id: "5", img: require("../../../assets/images/partners/n11-logo.png") },
-  { id: "6", img: require("../../../assets/images/partners/teknosa.jpg") },
-];
-
+// Ekran genişliğini al
 const { width } = Dimensions.get("window");
+// Her slaytta gösterilecek logo sayısı
 const logosPerSlide = 3;
+// Slayt genişliği: ekran genişliği - padding
 const slideWidth = width - 32;
 
 export default function PartnersSection() {
-  // Partnerleri logosPerSlide'lık gruplara bölüyoruz
+  const dispatch = useDispatch();
+
+  // Redux store'dan satış noktalarını ve durum bilgisini al
+  const { data: salesPoints, status } = useSelector((state) => state.salesPoints);
+
+  // Bileşen yüklendiğinde sadece bir kez veri çekmek için useEffect kullan
+  useEffect(() => {
+    if (status === "idle") dispatch(fetchSalesPoints()); // Eğer durum 'idle' ise verileri API'den çek
+  }, [dispatch, status]);
+
+  // Eğer veriler yükleniyorsa, ekrana loading göstergesi bas
+  if (status === "loading") {
+    return <ActivityIndicator size="large" style={{ marginTop: 20 }} />;
+  }
+
+  // Partnerleri 3'erli gruplara böl
   const groupedPartners = [];
-  for (let i = 0; i < partnersData.length; i += logosPerSlide) {
-    groupedPartners.push(partnersData.slice(i, i + logosPerSlide));
+  for (let i = 0; i < salesPoints.length; i += logosPerSlide) {
+    groupedPartners.push(salesPoints.slice(i, i + logosPerSlide));
   }
 
   return (
     <View style={{ marginBottom: 20, height: 100 }}>
       <Text style={styles.title}>Satış Noktalarımız</Text>
-      <Swiper
-        autoplay
-        autoplayTimeout={3}
-        loop
-        showsPagination={false}
-        style={{}}
-        containerStyle={{}}
-      >
+      <Swiper autoplay autoplayTimeout={3} loop showsPagination={false}>
         {groupedPartners.map((group, index) => (
           <View key={index} style={styles.slide}>
             {group.map((partner) => (
-              <View key={partner.id} style={styles.logoContainer}>
-                <Image source={partner.img} style={styles.logo} />
+              <View key={partner._id} style={styles.logoContainer}>
+                <Image
+                  source={{ uri: `http://192.168.1.23:3000/partners/${partner.image}` }}
+                  style={styles.logo}
+                />
               </View>
             ))}
-       
           </View>
         ))}
       </Swiper>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   title: {
     fontSize: 20,
@@ -63,18 +65,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   logoContainer: {
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    padding: 12,
-    alignItems: "center",
+    backgroundColor: "#fff", 
+    borderRadius: 8,       
+    padding: 12,            
+    alignItems: "center",  
     justifyContent: "center",
     height: 80,
-    width: (slideWidth - 32) / logosPerSlide,
-    elevation: 3,
+    width: (slideWidth - 32) / logosPerSlide, 
+    elevation: 3,           
   },
   logo: {
     width: "100%",
-    height: 40,
-    resizeMode: "contain",
+    height: 30,
+    resizeMode: "contain", 
   },
 });
