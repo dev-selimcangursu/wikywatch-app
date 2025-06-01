@@ -5,6 +5,7 @@ import notificationsReducer from "./slices/notificationsSlice";
 import productReducer from "./slices/productSlice";
 import faultCategoryReducer from "./slices/faultCategorySlice";
 import boxContentReducer from "./slices/boxContentSlice";
+import faqReducer from "./slices/faqSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     products: productReducer,
     faultCategories: faultCategoryReducer,
     boxContent: boxContentReducer,
+    faq: faqReducer,
   },
 });
