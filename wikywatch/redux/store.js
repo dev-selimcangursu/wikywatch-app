@@ -3,6 +3,7 @@ import appsReducer from "./slices/appsSlice";
 import salesPointsReducer from "./slices/salesPointsSlice";
 import notificationsReducer from "./slices/notificationsSlice";
 import productReducer from './slices/productSlice';
+import faultCategoryReducer from './slices/faultCategorySlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     salesPoints: salesPointsReducer,
     notifications: notificationsReducer,
     products: productReducer,
+    faultCategories: faultCategoryReducer,
 
   },
 });

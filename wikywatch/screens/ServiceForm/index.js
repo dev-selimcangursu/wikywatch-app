@@ -12,7 +12,9 @@ import Select from "../../components/Select";
 import CheckBoxGroup from "./components/CheckBoxGroup";
 import BoxContent from "./components/BoxContent";
 import Header from "../../components/Header";
+
 import { fetchProducts } from "../../redux/slices/productSlice";
+import { fetchFaultCategories } from "../../redux/slices/faultCategorySlice";
 
 const cityOptions = [
   { label: "İstanbul", value: "1" },
@@ -26,30 +28,20 @@ const districtOptions = [
   { label: "Bornova", value: "13" },
 ];
 
-const faultCategoryOptions = [
-  { label: "Kırık Dokunmatik Ekran", value: "1" },
-  { label: "Sıvı Teması", value: "2" },
-  { label: "Ses Sorunu", value: "3" },
-  { label: "Konum Sorunu", value: "4" },
-  { label: "Kordon Kopması", value: "5" },
-  { label: "Kurulum Problemi", value: "6" },
-  { label: "Şarj Aleti Sorunu", value: "7" },
-  { label: "Tuş Sorunu", value: "8" },
-  { label: "Kamera Hatası", value: "9" },
-  { label: "Koldan Taktı - Çıkardı Hatası", value: "10" },
-  { label: "Kasa Kırığı", value: "11" },
-  { label: "Şarj Az Gidiyor", value: "12" },
-  { label: "Şarj Etmiyor", value: "13" },
-];
-
 export default function ServiceForm() {
   const dispatch = useDispatch();
 
   const {
     items: products,
-    loading,
-    error,
+    loading: productsLoading,
+    error: productsError,
   } = useSelector((state) => state.products);
+
+  const {
+    items: faultCategories,
+    loading: faultCategoriesLoading,
+    error: faultCategoriesError,
+  } = useSelector((state) => state.faultCategories);
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -67,6 +59,7 @@ export default function ServiceForm() {
 
   useEffect(() => {
     dispatch(fetchProducts());
+    dispatch(fetchFaultCategories());
   }, [dispatch]);
 
   const handleChange = (key, value) => {
@@ -78,9 +71,8 @@ export default function ServiceForm() {
     console.log("Gönderilen Form Verisi:", formData);
   };
 
-  // Ürünlerden aktif olanları Select için map et
   const productOptions = products
-    .filter((p) => p.is_active) // backend’e göre is_active veya status değişebilir
+    .filter((p) => p.is_active)
     .map((p) => ({ label: p.name, value: p.product_id }));
 
   return (
@@ -96,6 +88,7 @@ export default function ServiceForm() {
           value={formData.fullName}
           onChangeText={(val) => handleChange("fullName", val)}
         />
+
         <Label>GSM Numarası</Label>
         <Input
           placeholder="Telefon numarası giriniz"
@@ -103,6 +96,7 @@ export default function ServiceForm() {
           onChangeText={(val) => handleChange("phone", val)}
           keyboardType="phone-pad"
         />
+
         <Label>E-Posta Adresi</Label>
         <Input
           placeholder="E-posta adresi giriniz"
@@ -110,12 +104,14 @@ export default function ServiceForm() {
           onChangeText={(val) => handleChange("email", val)}
           keyboardType="email-address"
         />
+
         <Label>Adres Bilgisi</Label>
         <Textarea
           placeholder="Adres bilgilerinizi giriniz"
           value={formData.address}
           onChangeText={(val) => handleChange("address", val)}
         />
+
         <Label>Şehir</Label>
         <Select
           label="Şehir"
@@ -123,6 +119,7 @@ export default function ServiceForm() {
           onValueChange={(val) => handleChange("city", val)}
           options={cityOptions}
         />
+
         <Label>İlçe</Label>
         <Select
           label="İlçe"
@@ -130,11 +127,12 @@ export default function ServiceForm() {
           onValueChange={(val) => handleChange("district", val)}
           options={districtOptions}
         />
+
         <Label>Ürün</Label>
-        {loading ? (
+        {productsLoading ? (
           <Text>Ürünler yükleniyor...</Text>
-        ) : error ? (
-          <Text style={{ color: "red" }}>Hata: {error}</Text>
+        ) : productsError ? (
+          <Text style={{ color: "red" }}>Hata: {productsError}</Text>
         ) : (
           <Select
             label="Ürün"
@@ -143,33 +141,45 @@ export default function ServiceForm() {
             options={productOptions}
           />
         )}
+
         <Label>İmei Numarası</Label>
         <Input
           placeholder="IMEI giriniz"
           value={formData.imei}
           onChangeText={(val) => handleChange("imei", val)}
         />
+
         <Label>Arıza Kategorisi</Label>
-        <CheckBoxGroup
-          options={faultCategoryOptions}
-          selectedValues={formData.faultCategories}
-          onChange={(selected) => handleChange("faultCategories", selected)}
-        />
+        {faultCategoriesLoading ? (
+          <Text>Arıza kategorileri yükleniyor...</Text>
+        ) : faultCategoriesError ? (
+          <Text style={{ color: "red" }}>Hata: {faultCategoriesError}</Text>
+        ) : (
+          <CheckBoxGroup
+            options={faultCategories}
+            selectedValues={formData.faultCategories}
+            onChange={(selected) => handleChange("faultCategories", selected)}
+          />
+        )}
+
         <Label>Arıza Tanımı</Label>
         <Textarea
           placeholder="Arızayı detaylı şekilde açıklayınız"
           value={formData.faultDescription}
           onChangeText={(val) => handleChange("faultDescription", val)}
         />
+
         <Label>Kutu İçeriği</Label>
         <BoxContent
           selectedValues={formData.boxContent}
           onChange={(selected) => handleChange("boxContent", selected)}
         />
+
         <NoteText>
           Ürünü teknik servise gönderirken kutu içeriğini eksiksiz ekleyiniz.
           Gönderim sonrası tarafınıza bilgilendirme yapılacaktır.
         </NoteText>
+
         <AppButton title="Gönder" onPress={handleSubmit} />
       </View>
     </ScrollView>
