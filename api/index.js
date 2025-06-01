@@ -6,6 +6,7 @@ const mobileAppsRoute = require("./Routes/MobileApp");
 const salesPointRoutes = require('./Routes/SalesPoint');
 const notificationRoutes = require('./Routes/Notification');
 const productsRoutes = require('./Routes/Product');
+const faultCategoriesRoutes = require('./Routes/FaultCategories');
 const cors = require("cors");
 const path = require("path");
 
@@ -27,6 +28,8 @@ app.use("/api/mobile-apps", mobileAppsRoute);
 app.use('/api/sales-points', salesPointRoutes);
 app.use('/api/notification', notificationRoutes);
 app.use('/api/products', productsRoutes);
+app.use('/api/fault-categories', faultCategoriesRoutes);
+
 
 // Sunucuyu başlat
 const PORT = process.env.PORT || 3000;
