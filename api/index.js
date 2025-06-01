@@ -7,6 +7,8 @@ const salesPointRoutes = require('./Routes/SalesPoint');
 const notificationRoutes = require('./Routes/Notification');
 const productsRoutes = require('./Routes/Product');
 const faultCategoriesRoutes = require('./Routes/FaultCategories');
+const boxContentRoutes = require('./Routes/BoxContent');
+
 const cors = require("cors");
 const path = require("path");
 
@@ -29,6 +31,7 @@ app.use('/api/sales-points', salesPointRoutes);
 app.use('/api/notification', notificationRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/fault-categories', faultCategoriesRoutes);
+app.use('/api/box-content', boxContentRoutes);
 
 
 // Sunucuyu başlat
