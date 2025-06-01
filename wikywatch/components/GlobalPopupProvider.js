@@ -14,16 +14,28 @@ import Icon from "@ant-design/react-native/lib/icon";
 const { width, height } = Dimensions.get("window");
 
 export default function ProductPopup() {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
-  // Popup İçeirk bilgileri
   const product = {
     name: "Wiky Watch 5E - Pembe",
     description:
-      "Yeni nesil akıllı saat, sağlıklı yaşam takibi, uzun pil ömrü ve şık tasarım.",
-    imageUrl: "http://192.168.1.23:3000/popups/wikywatch5e-pembe.webp",
+      "Yeni nesil akıllı saat: sağlıklı yaşam takibi, uzun pil ömrü ve modern tasarımıyla öne çıkıyor.",
+    imageUrl: "http://192.168.36.147:3000/popups/wikywatch5e-pembe.webp",
     detailsUrl: "https://www.wikywatch.com.tr/wiky-watch-5e/",
   };
+
+  useEffect(() => {
+    // Sayfa açılır açılmaz popup'u göster
+    setVisible(true);
+
+    // 3 dakikada bir popup'u tekrar aç
+    const interval = setInterval(() => {
+      setVisible(true);
+    }, 3 * 60 * 1000);
+
+    // Temizlik
+    return () => clearInterval(interval);
+  }, []);
 
   const handleClose = () => setVisible(false);
 
@@ -34,28 +46,27 @@ export default function ProductPopup() {
 
   return (
     <Portal>
-      <Modal visible={visible} transparent maskClosable={true} onClose={handleClose}>
+      <Modal
+        visible={visible}
+        transparent
+        maskClosable={true}
+        onClose={handleClose}
+        animationType="fade" // @ant-design/react-native destekliyorsa kalabilir
+      >
         <View style={styles.overlay}>
-          <View style={styles.modalContent}>
-            {/* Kapatma ikonu */}
-            <TouchableOpacity style={styles.closeIcon} onPress={handleClose}>
-              <Icon name="close" size="md" color="#555" />
+          <View style={styles.card}>
+            <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+              <Icon name="close" size="md" color="#333" />
             </TouchableOpacity>
 
-            {/* Ürün Görseli */}
-            <Image source={{ uri: product.imageUrl }} style={styles.productImage} />
+            <Image source={{ uri: product.imageUrl }} style={styles.image} />
 
-            {/* Ürün Bilgileri */}
-            <View style={styles.infoContainer}>
-              <Text style={styles.productName}>{product.name}</Text>
-              <Text style={styles.productDescription}>{product.description}</Text>
+            <View style={styles.content}>
+              <Text style={styles.title}>{product.name}</Text>
+              <Text style={styles.description}>{product.description}</Text>
 
-              <TouchableOpacity
-                style={styles.detailsButton}
-                activeOpacity={0.8}
-                onPress={handleDetailsPress}
-              >
-                <Text style={styles.detailsButtonText}>Detayları Gör</Text>
+              <TouchableOpacity style={styles.button} onPress={handleDetailsPress}>
+                <Text style={styles.buttonText}>Detayları Gör</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -68,66 +79,64 @@ export default function ProductPopup() {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.6)", // Arka plan karartma
+    backgroundColor: "rgba(0,0,0,0.7)",
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 20,
+    padding: 20,
+    zIndex: 9999,
   },
-  modalContent: {
-    width: "100%",
-    maxWidth: 400,
+  card: {
+    width: width * 0.9,
+    maxWidth: 380,
     backgroundColor: "#fff",
-    borderRadius: 20,
+    borderRadius: 24,
     overflow: "hidden",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
-    alignItems: "center",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 10,
+    position: "relative",
   },
-  closeIcon: {
+  closeButton: {
     position: "absolute",
-    top: 15,
-    right: 15,
-    zIndex: 10,
-    backgroundColor: "#eee",
+    top: 14,
+    right: 14,
+    zIndex: 2,
+    backgroundColor: "#f0f0f0",
     borderRadius: 20,
     padding: 8,
   },
-  productImage: {
+  image: {
     width: "100%",
-    height: height * 0.5,
+    height: height * 0.35,
     resizeMode: "cover",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
   },
-  infoContainer: {
+  content: {
     padding: 20,
-    width: "100%",
     alignItems: "center",
   },
-  productName: {
-    fontSize: 22,
+  title: {
+    fontSize: 20,
     fontWeight: "700",
     marginBottom: 10,
-    color: "#222",
+    color: "#111",
     textAlign: "center",
   },
-  productDescription: {
-    fontSize: 16,
-    color: "#555",
-    marginBottom: 20,
+  description: {
+    fontSize: 15,
+    color: "#444",
     textAlign: "center",
+    marginBottom: 20,
     lineHeight: 22,
   },
-  detailsButton: {
+  button: {
     backgroundColor: "#007AFF",
+    borderRadius: 25,
     paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 30,
+    paddingHorizontal: 28,
   },
-  detailsButtonText: {
+  buttonText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "600",

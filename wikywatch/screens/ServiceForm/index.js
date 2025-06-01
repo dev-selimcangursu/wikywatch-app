@@ -1,13 +1,6 @@
-import React, { useState } from "react";
-import {
-  ScrollView,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-  Image,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { ScrollView, Text, View, Alert } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./style";
 
 import Input from "../../components/Input";
@@ -19,6 +12,7 @@ import Select from "../../components/Select";
 import CheckBoxGroup from "./components/CheckBoxGroup";
 import BoxContent from "./components/BoxContent";
 import Header from "../../components/Header";
+import { fetchProducts } from "../../redux/slices/productSlice";
 
 const cityOptions = [
   { label: "İstanbul", value: "1" },
@@ -30,20 +24,6 @@ const districtOptions = [
   { label: "Kadıköy", value: "11" },
   { label: "Çankaya", value: "12" },
   { label: "Bornova", value: "13" },
-];
-
-const productOptions = [
-  { label: "Wiky Watch 1", value: "wiky1" },
-  { label: "Wiky Watch 2", value: "wiky2" },
-  { label: "Wiky Watch 3", value: "wiky3" },
-  { label: "Wiky Watch S", value: "wikys" },
-  { label: "Wiky Watch 3 Plus", value: "wiky3p" },
-  { label: "Wiky Watch 4", value: "wiky4" },
-  { label: "Wiky Watch 4G", value: "wiky4g" },
-  { label: "Wiky Watch 4 Plus", value: "wiky4p" },
-  { label: "Wiky Watch 4S", value: "wiky4s" },
-  { label: "Wiky Watch 5 Plus", value: "wiky5p" },
-  { label: "Wiky Watch 5E", value: "wiky5e" },
 ];
 
 const faultCategoryOptions = [
@@ -63,6 +43,14 @@ const faultCategoryOptions = [
 ];
 
 export default function ServiceForm() {
+  const dispatch = useDispatch();
+
+  const {
+    items: products,
+    loading,
+    error,
+  } = useSelector((state) => state.products);
+
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
@@ -77,6 +65,10 @@ export default function ServiceForm() {
     boxContent: [],
   });
 
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
   const handleChange = (key, value) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
@@ -85,6 +77,11 @@ export default function ServiceForm() {
     Alert.alert("Başarılı", "Form gönderildi.");
     console.log("Gönderilen Form Verisi:", formData);
   };
+
+  // Ürünlerden aktif olanları Select için map et
+  const productOptions = products
+    .filter((p) => p.is_active) // backend’e göre is_active veya status değişebilir
+    .map((p) => ({ label: p.name, value: p.product_id }));
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -121,22 +118,31 @@ export default function ServiceForm() {
         />
         <Label>Şehir</Label>
         <Select
+          label="Şehir"
           selectedValue={formData.city}
           onValueChange={(val) => handleChange("city", val)}
           options={cityOptions}
         />
         <Label>İlçe</Label>
         <Select
+          label="İlçe"
           selectedValue={formData.district}
           onValueChange={(val) => handleChange("district", val)}
           options={districtOptions}
         />
         <Label>Ürün</Label>
-        <Select
-          selectedValue={formData.product}
-          onValueChange={(val) => handleChange("product", val)}
-          options={productOptions}
-        />
+        {loading ? (
+          <Text>Ürünler yükleniyor...</Text>
+        ) : error ? (
+          <Text style={{ color: "red" }}>Hata: {error}</Text>
+        ) : (
+          <Select
+            label="Ürün"
+            selectedValue={formData.product}
+            onValueChange={(val) => handleChange("product", val)}
+            options={productOptions}
+          />
+        )}
         <Label>İmei Numarası</Label>
         <Input
           placeholder="IMEI giriniz"
