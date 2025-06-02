@@ -1,21 +1,28 @@
+// src/redux/slices/notificationSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { getNotifications, markNotificationRead } from "../../services/notificationService";
 
-// Bildirimleri getir
 export const fetchNotifications = createAsyncThunk(
   "notifications/fetchNotifications",
-  async () => {
-    const response = await axios.get("http://192.168.75.147:3000/api/notification");
-    return response.data;
+  async (_, thunkAPI) => {
+    try {
+      const response = await getNotifications();
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message || "Bildirimler alınamadı.");
+    }
   }
 );
 
-// Bildirimi okundu olarak işaretle
 export const markNotificationAsRead = createAsyncThunk(
   "notifications/markAsRead",
   async (id, thunkAPI) => {
-    await axios.patch(`http://192.168.75.147:3000/api/notification/${id}/read`);
-    return id;
+    try {
+      await markNotificationRead(id);
+      return id;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message || "Bildirim okunamadı olarak işaretlenemedi.");
+    }
   }
 );
 
@@ -31,18 +38,17 @@ const notificationsSlice = createSlice({
     builder
       .addCase(fetchNotifications.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(fetchNotifications.fulfilled, (state, action) => {
         state.loading = false;
-        // sadece okunmamışları listele
-        state.items = action.payload.filter((item) => !item.read);
+        state.items = action.payload.filter((item) => !item.read); 
       })
       .addCase(fetchNotifications.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       .addCase(markNotificationAsRead.fulfilled, (state, action) => {
-        // Okundu olarak işaretlenen bildirimi listeden çıkar
         state.items = state.items.filter((item) => item._id !== action.payload);
       });
   },

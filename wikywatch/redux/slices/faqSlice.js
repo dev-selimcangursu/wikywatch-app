@@ -1,10 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { getFaqs } from "../../services/faqService";
 
-export const fetchFaqs = createAsyncThunk("faq/fetchFaqs", async () => {
-  const response = await axios.get("http://192.168.75.147:3000/api/faq");
-  return response.data;
-});
+export const fetchFaqs = createAsyncThunk(
+  "faq/fetchFaqs",
+  async (_, thunkAPI) => {
+    try {
+      const response = await getFaqs();
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message || "Veriler alınamadı.");
+    }
+  }
+);
 
 const faqSlice = createSlice({
   name: "faq",
@@ -26,7 +33,7 @@ const faqSlice = createSlice({
       })
       .addCase(fetchFaqs.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       });
   },
 });

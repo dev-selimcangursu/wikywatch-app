@@ -1,10 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { fetchAppsAPI } from "../../services/appService";
 
-export const fetchApps = createAsyncThunk("apps/fetchApps", async () => {
-  const response = await axios.get("http://192.168.75.147:3000/api/mobile-apps");
-  return response.data;
-});
+export const fetchApps = createAsyncThunk(
+  "apps/fetchApps",
+  async (_, thunkAPI) => {
+    try {
+      return await fetchAppsAPI(); // direkt data dönüyor
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 
 const appsSlice = createSlice({
   name: "apps",
@@ -18,14 +24,15 @@ const appsSlice = createSlice({
     builder
       .addCase(fetchApps.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(fetchApps.fulfilled, (state, action) => {
         state.loading = false;
-        state.apps = action.payload;
+        state.apps = action.payload;  // burada data doğrudan payload oluyor
       })
       .addCase(fetchApps.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       });
   },
 });

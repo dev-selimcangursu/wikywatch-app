@@ -1,15 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { fetchOrderStatusService } from "../../services/orderService";
 
 export const fetchOrderStatus = createAsyncThunk(
   "order/fetchOrderStatus",
   async (orderNumber, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        "http://imfexim.loopsoft.app/admin/order/status",
-        { orderNumber }
-      );
-      return response.data;
+      const data = await fetchOrderStatusService(orderNumber);
+      return data;
     } catch (error) {
       console.log("Hata Detayı:", error.response?.data || error.message);
       return rejectWithValue(
@@ -18,7 +15,6 @@ export const fetchOrderStatus = createAsyncThunk(
     }
   }
 );
-
 
 const orderStatusSlice = createSlice({
   name: "order",

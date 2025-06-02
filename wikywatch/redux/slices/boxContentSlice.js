@@ -1,13 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { getBoxContent } from "../../services/boxContentService";
 
 export const fetchBoxContent = createAsyncThunk(
   "boxContent/fetchBoxContent",
   async () => {
-    const response = await axios.get(
-      "http://192.168.75.147:3000/api/box-content"
-    );
-    return response.data.data;
+    const response = await getBoxContent();
+    return response.data; 
   }
 );
 
@@ -15,31 +13,18 @@ const boxContentSlice = createSlice({
   name: "boxContent",
   initialState: {
     items: [],
-    selected: [],
     status: "idle",
     error: null,
   },
-  reducers: {
-    toggleItem: (state, action) => {
-      const item = action.payload;
-      if (state.selected.includes(item)) {
-        state.selected = state.selected.filter((i) => i !== item);
-      } else {
-        state.selected.push(item);
-      }
-    },
-    clearSelected: (state) => {
-      state.selected = [];
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchBoxContent.pending, (state) => {
         state.status = "loading";
       })
       .addCase(fetchBoxContent.fulfilled, (state, action) => {
+        state.items = action.payload;  
         state.status = "succeeded";
-        state.items = action.payload;
       })
       .addCase(fetchBoxContent.rejected, (state, action) => {
         state.status = "failed";
@@ -48,5 +33,4 @@ const boxContentSlice = createSlice({
   },
 });
 
-export const { toggleItem, clearSelected } = boxContentSlice.actions;
 export default boxContentSlice.reducer;

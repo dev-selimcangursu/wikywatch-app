@@ -7,8 +7,8 @@ import faultCategoryReducer from "./slices/faultCategorySlice";
 import boxContentReducer from "./slices/boxContentSlice";
 import faqReducer from "./slices/faqSlice";
 import serviceStatusReducer from "./slices/serviceStatusSlice";
-import orderStatusReducer from './slices/orderStatusSlice';
-
+import orderStatusReducer from "./slices/orderStatusSlice";
+import resetFormReducer from "./slices/resetFormSlice";
 
 export const store = configureStore({
   reducer: {
@@ -21,5 +21,6 @@ export const store = configureStore({
     faq: faqReducer,
     serviceStatus: serviceStatusReducer,
     order: orderStatusReducer,
+    resetForm: resetFormReducer,
   },
 });

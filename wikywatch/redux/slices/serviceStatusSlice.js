@@ -1,24 +1,21 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { fetchServiceStatusAPI } from '../../services/serviceStatusService';
 
 export const fetchServiceStatus = createAsyncThunk(
-  "serviceStatus/fetch",
+  'serviceStatus/fetch',
   async (serviceNumber, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        `http://imfexim.loopsoft.app/admin/service/status?serviceNumber=${serviceNumber}`
-      );
-      return response.data;
+      return await fetchServiceStatusAPI(serviceNumber);
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Bilinmeyen bir hata oluştu."
+        error.response?.data?.message || 'Bilinmeyen bir hata oluştu.'
       );
     }
   }
 );
 
 const serviceStatusSlice = createSlice({
-  name: "serviceStatus",
+  name: 'serviceStatus',
   initialState: {
     data: null,
     loading: false,
@@ -50,3 +47,4 @@ const serviceStatusSlice = createSlice({
 
 export const { clearServiceStatus } = serviceStatusSlice.actions;
 export default serviceStatusSlice.reducer;
+

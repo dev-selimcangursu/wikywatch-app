@@ -174,7 +174,6 @@ export default function ServiceForm() {
           selectedValues={formData.boxContent}
           onChange={(selected) => handleChange("boxContent", selected)}
         />
-
         <NoteText>
           Ürünü teknik servise gönderirken kutu içeriğini eksiksiz ekleyiniz.
           Gönderim sonrası tarafınıza bilgilendirme yapılacaktır.

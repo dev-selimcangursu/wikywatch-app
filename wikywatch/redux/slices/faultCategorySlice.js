@@ -1,14 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { getFaultCategories } from "../../services/faultCategoryService";
 
-// API'den fault categories'i çek
 export const fetchFaultCategories = createAsyncThunk(
   "faultCategories/fetchFaultCategories",
-  async () => {
-    const response = await axios.get(
-      "http://192.168.75.147:3000/api/fault-categories"
-    );
-    return response.data;
+  async (_, thunkAPI) => {
+    try {
+      const response = await getFaultCategories();
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message || "Hata kategorileri alınamadı.");
+    }
   }
 );
 
@@ -35,7 +36,7 @@ const faultCategorySlice = createSlice({
       })
       .addCase(fetchFaultCategories.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       });
   },
 });
