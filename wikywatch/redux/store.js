@@ -6,6 +6,9 @@ import productReducer from "./slices/productSlice";
 import faultCategoryReducer from "./slices/faultCategorySlice";
 import boxContentReducer from "./slices/boxContentSlice";
 import faqReducer from "./slices/faqSlice";
+import serviceStatusReducer from "./slices/serviceStatusSlice";
+import orderStatusReducer from './slices/orderStatusSlice';
+
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +19,7 @@ export const store = configureStore({
     faultCategories: faultCategoryReducer,
     boxContent: boxContentReducer,
     faq: faqReducer,
+    serviceStatus: serviceStatusReducer,
+    order: orderStatusReducer,
   },
 });

@@ -4,10 +4,9 @@ import {
   Text,
   Image,
   StyleSheet,
-  FlatList,
-  TouchableOpacity,
   Dimensions,
 } from "react-native";
+import Swiper from "react-native-swiper";
 
 const blogsData = [
   {
@@ -25,37 +24,36 @@ const blogsData = [
   {
     id: "3",
     title: "Teknoloji ile Güvende Kalın",
-    excerpt: "Giyilebilir teknolojilerle güvenliği artırmanın yolları.",
+    excerpt: "Giyilebilir teknolojilerle güvenliği artırmanın yollarını bizimle keşfet.",
     image: require("../../../assets/images/blogs/blog-3.jpg"),
   },
 ];
 
 const { width } = Dimensions.get("window");
-const cardWidth = width * 0.8;
+const cardWidth = width - 32;
+const cardHeight = (cardWidth * 9) / 16; 
 
 export default function BlogSection() {
-  const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.card}>
-      <Image source={item.image} style={styles.image} />
-      <View style={styles.cardContent}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.excerpt}>{item.excerpt}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-
   return (
     <View style={{ marginBottom: 20, marginTop: 20 }}>
       <Text style={styles.sectionTitle}>Blog Yazılarımız</Text>
-      <FlatList
-        data={blogsData}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingHorizontal: 16 }}
-        ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
-      />
+      <Swiper
+        autoplay
+        autoplayTimeout={5}
+        loop
+        showsPagination
+        style={{ height: cardHeight + 100 }} 
+      >
+        {blogsData.map((item) => (
+          <View key={item.id} style={styles.card}>
+            <Image source={item.image} style={styles.image} />
+            <View style={styles.cardContent}>
+              <Text style={styles.title}>{item.title}</Text>
+              <Text style={styles.excerpt}>{item.excerpt}</Text>
+            </View>
+          </View>
+        ))}
+      </Swiper>
     </View>
   );
 }
@@ -68,6 +66,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: cardWidth,
+    alignSelf: "center",
     backgroundColor: "#fff",
     borderRadius: 12,
     overflow: "hidden",
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: 140,
+    height: cardHeight,
     resizeMode: "cover",
   },
   cardContent: {

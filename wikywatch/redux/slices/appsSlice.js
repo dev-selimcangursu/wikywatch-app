@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const fetchApps = createAsyncThunk("apps/fetchApps", async () => {
-  const response = await axios.get("http://192.168.36.147:3000/api/mobile-apps");
+  const response = await axios.get("http://192.168.75.147:3000/api/mobile-apps");
   return response.data;
 });
 

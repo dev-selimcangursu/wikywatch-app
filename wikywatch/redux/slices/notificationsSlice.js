@@ -5,7 +5,7 @@ import axios from "axios";
 export const fetchNotifications = createAsyncThunk(
   "notifications/fetchNotifications",
   async () => {
-    const response = await axios.get("http://192.168.36.147:3000/api/notification");
+    const response = await axios.get("http://192.168.75.147:3000/api/notification");
     return response.data;
   }
 );
@@ -14,7 +14,7 @@ export const fetchNotifications = createAsyncThunk(
 export const markNotificationAsRead = createAsyncThunk(
   "notifications/markAsRead",
   async (id, thunkAPI) => {
-    await axios.patch(`http://192.168.36.147:3000/api/notification/${id}/read`);
+    await axios.patch(`http://192.168.75.147:3000/api/notification/${id}/read`);
     return id;
   }
 );

@@ -5,7 +5,7 @@ export const fetchBoxContent = createAsyncThunk(
   "boxContent/fetchBoxContent",
   async () => {
     const response = await axios.get(
-      "http://192.168.36.147:3000/api/box-content"
+      "http://192.168.75.147:3000/api/box-content"
     );
     return response.data.data;
   }

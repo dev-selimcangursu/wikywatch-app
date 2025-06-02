@@ -6,7 +6,7 @@ export const fetchFaultCategories = createAsyncThunk(
   "faultCategories/fetchFaultCategories",
   async () => {
     const response = await axios.get(
-      "http://192.168.36.147:3000/api/fault-categories"
+      "http://192.168.75.147:3000/api/fault-categories"
     );
     return response.data;
   }

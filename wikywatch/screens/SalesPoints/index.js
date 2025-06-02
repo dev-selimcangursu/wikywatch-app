@@ -1,29 +1,37 @@
-import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import React, { useEffect } from "react";
+import { View, Text, ScrollView, ActivityIndicator } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchSalesPoints } from "../../redux/slices/salesPointsSlice";
+
 import styles from "./style";
 import Header from "../../components/Header";
 import SalesPointCard from "./components/SalesPointCard";
 
-const salesPoints = [
-  { name: "MediaMarkt", logo: require("../../assets/images/partners/mediamarkt-logo.png") },
-  { name: "Teknosa", logo: require("../../assets/images/partners/teknosa.jpg") },
-  { name: "Turkcell", logo:require("../../assets/images/partners/logo.webp") },
-  { name: "D&R", logo:require("../../assets/images/partners/D&R_logo.jpg") },
-  { name: "Amazon", logo: require("../../assets/images/partners/amazon-logo.webp") },
-  { name: "N11", logo: require("../../assets/images/partners/n11-logo.png") },
-];
-
 export default function SalesPoints() {
+  const dispatch = useDispatch();
+
+  const { data: salesPoints, status, error } = useSelector((state) => state.salesPoints);
+
+  useEffect(() => {
+    dispatch(fetchSalesPoints());
+  }, [dispatch]);
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={{ ...styles.container, flexGrow: 1 }}>
       <Header
         title="Satış Noktalarımız"
         subtitle="Wiky Watch ürünlerini aşağıdaki anlaşmalı satış noktalarımızdan temin edebilirsiniz."
       />
 
-      <View style={styles.cardContainer}>
-        {salesPoints.map((point, index) => (
-          <SalesPointCard key={index} name={point.name} logo={point.logo} />
+      <View style={[styles.cardContainer, { paddingBottom: 40 }]}>
+        {status === "loading" && <ActivityIndicator size="large" color="#000" />}
+        {status === "failed" && <Text style={{ color: "red" }}>{error}</Text>}
+        {status === "succeeded" && salesPoints.map((point, index) => (
+          <SalesPointCard
+            key={index}
+            name={point.name}
+            logo={{ uri: `http://192.168.1.114:3000/partners/${point.image}` }} 
+          />
         ))}
       </View>
     </ScrollView>

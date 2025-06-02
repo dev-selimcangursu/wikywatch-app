@@ -7,6 +7,7 @@ import MobileAppsSection from "./components/MobileAppsSection";
 import ShortcutsSection from "./components/ShortcutsSection";
 import PartnersSection from "./components/PartnersSection";
 import BlogSection from "./components/BlogSection";
+import VideoSection from "./components/VideoSection";
 
 export default function HomeScreen({ navigation }) {
   return (
@@ -17,6 +18,7 @@ export default function HomeScreen({ navigation }) {
       <ShortcutsSection navigation={navigation} />
       <PartnersSection/>
       <BlogSection />
+      <VideoSection />
     </ScrollView>
   );
 }

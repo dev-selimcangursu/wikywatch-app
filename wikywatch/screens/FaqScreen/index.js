@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchFaqs } from "../../store/faqSlice";
+import { fetchFaqs } from "../../redux/slices/faqSlice";
 import FAQItem from "./components/FAQItem";
 import Header from "../../components/Header";
 import styles from "./style";

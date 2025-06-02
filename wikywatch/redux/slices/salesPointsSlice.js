@@ -6,7 +6,7 @@ import axios from "axios";
 export const fetchSalesPoints = createAsyncThunk(
   "salesPoints/fetchSalesPoints",
   async () => {
-    const response = await axios.get("http://192.168.36.147:3000/api/sales-points"); 
+    const response = await axios.get("http://192.168.75.147:3000/api/sales-points"); 
     return response.data;
   }
 );
